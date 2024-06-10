@@ -1,0 +1,29 @@
+.p-orderlist .p-orderlist-controls {
+    display: none !important;
+}
+
+.float {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+}
+
+.card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.card:last-child {
+    margin-bottom: 0
+}
+
+.border-bottom-1 {
+    border-bottom-width: 1px!important;
+    border-bottom-style: solid
+}
+
+.align-items-center {
+    align-items: center!important
+}

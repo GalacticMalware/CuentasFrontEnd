@@ -1,0 +1,70 @@
+<div class="p-4 border-round w-full lg:w-12">
+    <div class="text-center mb-5">
+        <img src="https://www.soydanielalejandro.info/code.svg" alt="Image" height="50" class="mb-3">
+        <div class="text-900 text-3xl font-medium mb-3">Bienvenido de regreso</div>
+        <span class="text-600 font-medium line-height-3">¿Aun no tienes una cuenta ?</span>
+        <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Crea una cuenta ahora!</a>
+    </div>
+
+    <div>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <label for="email" class="block text-900 font-medium mb-2">Correo o Cuenta</label>
+            <input type="text" pInputText formControlName="userEmail" class="w-full" placeholder="ejemplo@io.com" class="w-full mb-3" />
+            <div *ngFor="let error of errorMessages.Email">
+                <ng-container *ngIf="
+                  Email.hasError(error.type) && (Email.dirty || Email.touched)
+                ">
+                    <small class="block p-error">* {{ error.message }}</small
+                >
+              </ng-container>
+              <br/>
+            </div> 
+
+            <label for="password" class="block text-900 font-medium mb-2">Contraseña</label>
+            <input type="password" pInputText formControlName="password" class="w-full mb-3" placeholder="Contra" />
+            <div *ngFor="let error of errorMessages.Password">
+              <ng-container *ngIf="
+                  Password.hasError(error.type) && (Password.dirty || Password.touched)
+                ">
+                  <small class="block p-error">* {{ error.message }}</small
+                >
+              </ng-container><br/>  
+            </div> 
+            <div class="flex align-items-center justify-content-between mb-6">
+              <div class="flex align-items-center">
+                  <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+                  <label for="rememberme1" class="text-900">Recordar session</label>
+              </div>
+              <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">¿Olvidaste la contraseña?</a>
+          </div>
+  
+          <button type="submit"  [disabled]="loginForm.invalid" pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"></button>
+        </form>
+
+        
+    </div>
+</div>
+
+
+
+<!-- <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <p-card header="Inicio de session">
+        <div class="field">
+            <label for="email">Correo o Cuenta</label>
+            <input type="text" pInputText formControlName="Email" class="w-full" placeholder="ejemplo@io.com" />
+            <div *ngFor="let error of errorMessages.Email">
+                <ng-container *ngIf="
+                  Email.hasError(error.type) && (Email.dirty || Email.touched)
+                ">
+                    <small class="block p-error">* {{ error.message }}</small
+                >
+              </ng-container>
+            </div> 
+        </div>
+        <div class="field">
+            
+        </div>
+        <p-button label="SIGN IN" styleClass="w-full" ></p-button>
+        <div class="mt-2">Aun no tienes una cuenta? <a routerLink="/register">Registrate</a></div>
+    </p-card>
+</form>  -->
