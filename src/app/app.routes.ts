@@ -15,6 +15,10 @@ export const routes: Routes = [{
     loadComponent:() => import('./pages/dashboard/dashboard.component'),canActivate:[authGuard]
 },
 {
+    path:'start',
+    loadComponent:() => import('./pages/start/start.component'),canActivate:[authGuard]
+},
+{
     path:'register-purchases',
     loadComponent:() => import('./pages/register-purchases/register-purchases.component'),canActivate:[authGuard]
 },

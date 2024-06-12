@@ -1,10 +1,6 @@
-.p-orderlist .p-orderlist-controls {
-    display: none !important;
-}
-
 .float {
     position: fixed;
-    bottom: 40px;
+    bottom: 80px;
     right: 40px;
 }
 
@@ -26,4 +22,18 @@
 
 .align-items-center {
     align-items: center!important
+}
+
+.tabs {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+footer {
+    //background-color: #e0e;
+    //height: 6%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }

@@ -1,135 +1,47 @@
-<p-scrollPanel ScrollerToType="to-start" styleClass="border-1 surface-border">
+<app-navbar></app-navbar>
 
 
-    <div class="surface-ground px-4 py-5 md:px-6 lg:px-8">
-        @for (item of p; track item) {
-        <div class="grid">
-            <div class="col-12 md:col-6 lg:col-3">
-                <div class="surface-card shadow-2 p-3 border-round">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">{{item.concept}}</span>
-                            <div class="text-900 font-medium text-xl">{{'$' +item.amount}}</div>
+
+
+
+<footer>
+    <mat-tab-group headerPosition="below" [style]="{ width: '100%',height: 'calc(100%-0px)' }">
+        <mat-tab label="Inicio">
+            <div [style]="{ width: '100%',height: 'calc(92% - var(--mdc-secondary-navigation-tab-container-height))', position:'fixed', top:'var(--mat-toolbar-mobile-height)'}">
+                <p-scrollPanel ScrollerToType="to-start" [style]="{ width: '100%',height: '100%' }">
+                    <div class="surface-ground px-4 py-5 md:px-6 lg:px-8">
+                        @for (item of p; track item) {
+                        <div class="grid">
+                            <div class="col-12 md:col-6 lg:col-3">
+                                <div class="surface-card shadow-2 p-3 border-round">
+                                    <div class="flex justify-content-between mb-3">
+                                        <div>
+                                            <span class="block text-500 font-medium mb-3">{{item.concept}}</span>
+                                            <div class="text-900 font-medium text-xl">{{'$' +item.amount}}</div>
+                                        </div>
+                                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
+                                            <i class="pi {{item.icon}} text-blue-500 text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <span class="text-green-500 font-medium">{{item.datePurchase}} </span>
+                                    <span class="text-500">-</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
-                            <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
-                        </div>
+                        }
                     </div>
-                    <span class="text-green-500 font-medium">{{item.createdAt}} </span>
-                    <span class="text-500">-</span>
-                </div>
+                </p-scrollPanel>
+
+                <!-- <div style="height: 500px; position: relative;" class="speeddial-circle-demo">
+                    <p-button icon="pi pi-plus  " [rounded]="true" size="large" class="float" routerLink="/register-purchases" />
+                </div> -->
             </div>
-        </div>
-        }
-        <!-- <div class="grid">
-            <div class="col-12 md:col-6 lg:col-3">
-                <div class="surface-card shadow-2 p-3 border-round">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Orders</span>
-                            <div class="text-900 font-medium text-xl">152</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" style="width:2.5rem;height:2.5rem">
-                            <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
-                        </div>
-                    </div>
-                    <span class="text-green-500 font-medium">24 new </span>
-                    <span class="text-500">since last visit</span>
-                </div>
-            </div>
-            <div class="col-12 md:col-6 lg:col-3">
-                <div class="surface-card shadow-2 p-3 border-round">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Revenue</span>
-                            <div class="text-900 font-medium text-xl">$2.100</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-orange-100 border-round" style="width:2.5rem;height:2.5rem">
-                            <i class="pi pi-map-marker text-orange-500 text-xl"></i>
-                        </div>
-                    </div>
-                    <span class="text-green-500 font-medium">%52+ </span>
-                    <span class="text-500">since last week</span>
-                </div>
-            </div>
-            <div class="col-12 md:col-6 lg:col-3">
-                <div class="surface-card shadow-2 p-3 border-round">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Customers</span>
-                            <div class="text-900 font-medium text-xl">28441</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" style="width:2.5rem;height:2.5rem">
-                            <i class="pi pi-inbox text-cyan-500 text-xl"></i>
-                        </div>
-                    </div>
-                    <span class="text-green-500 font-medium">520  </span>
-                    <span class="text-500">newly registered</span>
-                </div>
-            </div>
-            <div class="col-12 md:col-6 lg:col-3">
-                <div class="surface-card shadow-2 p-3 border-round">
-                    <div class="flex justify-content-between mb-3">
-                        <div>
-                            <span class="block text-500 font-medium mb-3">Comments</span>
-                            <div class="text-900 font-medium text-xl">152 Unread</div>
-                        </div>
-                        <div class="flex align-items-center justify-content-center bg-purple-100 border-round" style="width:2.5rem;height:2.5rem">
-                            <i class="pi pi-comment text-purple-500 text-xl"></i>
-                        </div>
-                    </div>
-                    <span class="text-green-500 font-medium">85 </span>
-                    <span class="text-500">responded</span>
-                </div>
-            </div>
-        </div>-->
-    </div>
-</p-scrollPanel>
+        </mat-tab>
+        <mat-tab label="Compras" routerLink="/shopping-list" routerLinkActive="router-link-active">
+        </mat-tab>
+        <mat-tab label="Perfil"></mat-tab>
+    </mat-tab-group>
+</footer>
 
 
-
-<!-- <div class="card h-full">
-    <div class="text-900 text-xl font-semibold mb-3">
-        ejeplo
-    </div>
-    <ul class="list-none p-0 m-0">
-        <li class="flex align-items-center p-3 mb-3 border-bottom-1 surface-border">
-            <img src="https://apollo.primeng.org/assets/demo/images/banking/airbnb.png" class="w-3rem flex-shrink-0 mr-3">
-            <div class="flex flex-column">
-                <span class="text-xl font-medium text-900 mb-1">eJMPOLKIOS</span>
-                <span>51515151</span>
-                <span class="ml-auto font-semibold text-xl p-text-secondary">$250.00</span>
-            </div>
-        </li>
-    </ul>
-</div>
-
-<p-card header="Simple Card">
-    <p-table [value]="p">
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Quantity</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-            <tr>
-                <td>{{ product.concept }}</td>
-                <td>{{ product.createdAt }}</td>
-                <td>{{ product.amount }}</td>
-                <td>{{ product.quantity }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
-</p-card> -->
-
-
-
-
-
-
-<div style="height: 500px; position: relative;" class="speeddial-circle-demo">
-    <p-button icon="pi pi-plus  " [rounded]="true" size="large" class="float" routerLink="/register-purchases" />
-</div>
+<!-- <app-tabs class="tabs" [style]="{ width: '100%'}"></app-tabs> -->

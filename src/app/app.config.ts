@@ -15,6 +15,7 @@ import { HttpClient, provideHttpClient, withFetch, withInterceptors } from '@ang
 
 import { routes } from './app.routes';
 import { authInterceptor } from './custom/athi.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withFetch()),
     importProvidersFrom(HttpClient),
-    provideHttpClient(withInterceptors([authInterceptor]))
+    provideHttpClient(withInterceptors([authInterceptor])), provideAnimationsAsync()
   ],
 };
