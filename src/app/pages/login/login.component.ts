@@ -93,7 +93,7 @@ export default class LoginComponent implements OnInit {
    try{
     let response: any = await this.authService.singInUser(this.loginForm.value);
     localStorage.setItem('t',response.data.token);
-    return this.router.navigate(['/shopping-list']);
+    return this.router.navigate(['/start']);
   }catch(e:any){
     console.log(e);
     return null;

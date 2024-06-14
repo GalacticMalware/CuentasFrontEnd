@@ -36,7 +36,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     if (token != '') {
       return authService.validToken().pipe(
         map((data) => {
-          if (data.success) router.navigate(['/shopping-list']);
+          if (data.success) router.navigate(['/start']);
           else localStorage.removeItem("t");
           return true;
         }),

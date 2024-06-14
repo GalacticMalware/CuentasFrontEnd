@@ -1,45 +1,51 @@
-import { Component, inject,OnInit } from '@angular/core';
-import {PurchaseService} from '../../services/purchase.service';
+import { Component, inject, OnInit } from '@angular/core';
 
-import { SpeedDialModule } from 'primeng/speeddial';
+import { PurchaseService } from '../../services/purchase.service';
+import NavbarComponent from '../navbar/navbar.component';
+import { ShoppingData } from './shopping-data';
+
 import { CommonModule } from '@angular/common';
 import { ScrollerModule } from 'primeng/scroller';
-import { CardModule } from 'primeng/card';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import TabsComponent from '../tabs/tabs.component';
-import NavbarComponent from '../navbar/navbar.component'
-import {MatButtonModule} from '@angular/material/button';
-import {MatTabsModule} from '@angular/material/tabs';
+import { ButtonModule } from 'primeng/button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-shopping-list',
   standalone: true,
-  imports: [MatTabsModule,MatButtonModule,NavbarComponent,ScrollPanelModule,CardModule,SpeedDialModule,CommonModule,ScrollerModule,TabsComponent],
+  imports: [
+    NavbarComponent,
+    ScrollPanelModule,
+    CommonModule,
+    ScrollerModule,
+    ButtonModule,
+    MatButtonModule
+  ],
+  providers:[ShoppingData],
   templateUrl: './shopping-list.component.html',
   styleUrl: './shopping-list.component.scss',
 })
 export default class ShoppingListComponent implements OnInit {
-
   private pruchaseService = inject(PurchaseService);
-  public p:any;
-  
+  private purchaseDataFormat = inject(ShoppingData);
+  public dataPurchase: any = [];
+
   ngOnInit() {
     this.getPurchaseList();
   }
 
-  async getPurchaseList(){
-    try{
-      return this.pruchaseService.get().subscribe(
-        {
-          next:(data:any) =>{
-            console.log(data)
-            this.p = data.data;
-            
+  getPurchaseList() {
+    try {
+      this.pruchaseService.get().subscribe({
+        next: (data: any) => {
+          if(data.data){
+            console.log("data")
+            this.dataPurchase = this.purchaseDataFormat.formatData(data.data);
           }
-        }
-      );
-    }catch(e){
-      return null;
+        },
+      });
+    } catch (e) {
+      console.log(e)
     }
   }
 }

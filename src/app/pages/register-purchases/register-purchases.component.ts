@@ -1,6 +1,6 @@
-import { Component,inject } from '@angular/core';
-import {PurchaseService} from '../../services/purchase.service';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Component, Inject, inject } from '@angular/core';
+import { PurchaseService } from '../../services/purchase.service';
+
 import { MessageService } from 'primeng/api';
 import {
   Camera,
@@ -17,15 +17,30 @@ import {
   Validators,
   FormControl,
   ReactiveFormsModule,
-  FormsModule,
 } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { StyleClassModule } from 'primeng/styleclass';
 import { CommonModule } from '@angular/common';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { MatButtonModule } from '@angular/material/button';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogTitle,
+  MatDialogContent,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
+import { tap } from 'rxjs';
+
+interface TypesPayments_ {
+  name: string;
+}
 
 @Component({
   selector: 'app-register-purchases',
@@ -39,7 +54,10 @@ import { ToastModule } from 'primeng/toast';
     CalendarModule,
     InputTextModule,
     ScrollPanelModule,
-    ToastModule
+    ToastModule,
+    DropdownModule,
+    InputNumberModule,
+    MatButtonModule
   ],
   providers: [MessageService],
   templateUrl: './register-purchases.component.html',
@@ -51,40 +69,66 @@ export default class RegisterPurchasesComponent {
     private formBuilder: FormBuilder
   ) {}
   private pruchaseService = inject(PurchaseService);
-  private router = inject(Router);
   private messageService = inject(MessageService);
+
+  dialog = inject(MatDialog);
+
+
   userPhotos: {
     filepath: string;
     webviewPath?: string;
     data: any;
   }[] = [];
   imagenCapturada: SafeUrl | undefined;
-  base64:any;
+  base64: any;
 
-  get Name() {
-    return this.purchasesForm.get('Name') as FormControl;
+  typesPayments:TypesPayments_[] = [
+    { name: 'Tarjeta' },
+    { name: 'Efectivo' },
+  ];
+  placePurchase = [
+    { name: 'Super' },
+    { name: 'Farmacia' },
+    { name: 'Retiro' },
+    { name: 'Restaurante' },
+  ];
+
+  get concept() {
+    return this.purchasesForm.get('concept') as FormControl;
   }
-  get Date() {
-    return this.purchasesForm.get('Date') as FormControl;
+  get date() {
+    return this.purchasesForm.get('date') as FormControl;
   }
-  get Amount() {
-    return this.purchasesForm.get('Amount') as FormControl;
+  get amount() {
+    return this.purchasesForm.get('amount') as FormControl;
   }
-  // get Photo() {
-  //   return this.purchasesForm.get('Photo') as FormControl;
-  // }
+  get typePayment() {
+    return this.purchasesForm.get('typePayment') as FormControl;
+  }
+  get placePurcase() {
+    return this.purchasesForm.get('placePurcase') as FormControl;
+  }
+
+
 
   public purchasesForm = this.formBuilder.group({
-    Name: ['', [Validators.required]],
-    Date: ['', [Validators.required]],
-    Amount: ['', [Validators.required]],
-    //Photo: ['', [Validators.required]],
+    concept: ['', [Validators.required]],
+    date: ['', [Validators.required]],
+    amount: ['', [Validators.required]],
+    typePayment: ['', [Validators.required,Validators.nullValidator]],
+    placePurcase: ['', [Validators.required]],
   });
 
   public errorMessages: any = {
-    Name: [{ type: 'required', message: 'Por favor de llenar el campo' }],
-    Amount: [{ type: 'required', message: 'Por favor de llenar el campo' }],
-    Date: [{ type: 'required', message: 'Por favor de llenar el campo' }],
+    concept: [{ type: 'required', message: 'Por favor de llenar el campo' }],
+    amount: [{ type: 'required', message: 'Por favor de llenar el campo' }],
+    date: [{ type: 'required', message: 'Por favor de llenar el campo' }],
+    typePayment: [
+      { type: 'required', message: 'Por favor de llenar el campo' },
+    ],
+    placePurcase: [
+      { type: 'required', message: 'Por favor de llenar el campo' },
+    ],
   };
 
   async takePhone() {
@@ -101,7 +145,6 @@ export default class RegisterPurchasesComponent {
       this.userPhotos[0].webviewPath + ''
     );
 
-
     this.base64 = this.userPhotos[0].data;
 
     this.imagenCapturada = secureUrl;
@@ -116,7 +159,7 @@ export default class RegisterPurchasesComponent {
       data: base64Data,
       directory: Directory.Data,
     });
-    this.base64 
+    this.base64;
 
     return {
       filepath: fileName,
@@ -150,36 +193,76 @@ export default class RegisterPurchasesComponent {
     }
   }
 
-  public async registerPurchase() {
-    let dataNew:any = {
-      concept: this.purchasesForm.value.Name,
-      amount: this.purchasesForm.value.Amount,
-      UUID:"",
-      //...this.purchasesForm.value,
-      //typeBusiness: jsonObject.t,
-      img:this.base64
-    };
-    console.log(dataNew)
-    dataNew.Date;
-    try{
-      return this.pruchaseService.register(dataNew).subscribe({
-        next:(data)=>{
-          if(data.success){
-            this.show();
-            return this.router.navigate(['/shopping-list']);
-          }
-          return  "";
-        }
-      })
-    }catch(e){
-      console.log(e)
+  registerPurchase():void {
+    const typePayment:any = this.purchasesForm.value.typePayment;
+    const placePurchase:any = this.purchasesForm.value.placePurcase;
+    const date:any = this.purchasesForm.value.date;
+    let structure = {
+      uuid:'',
+      concept:this.purchasesForm.value.concept,
+      amount:this.purchasesForm.value.amount,
+      date:new Date(date).toISOString().split('T')[0],
+      typePayment:typePayment.name,
+      placePurchase:placePurchase.name,
+      img:this.base64 ? this.base64 : '',
     }
-   
-    return null
+    //console.log()
+    if (!this.base64) {
+      this.openDialog('0ms', '0ms', structure);
+    }else{
+      this.uploadData(structure);
+    }
   }
 
+  uploadData(data:any):void {
+    try {
+      console.log(data);
+         this.pruchaseService.register(data).subscribe({
+           next: (data) => {
+            console.log(data)
+             if (data.success) {
+               this.show();
+               //return this.router.navigate(['/shopping-list']);
+             }
+             return '';
+           },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+  }
 
   show() {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Se ingreso correctamnete' });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Se ingreso correctamnete',
+    });
   }
+
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, data:any): void {
+  this.dialog.open(DialogAnimationsExampleDialog, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    }).afterClosed().pipe(tap((result:boolean)=> {
+      if(result){
+        this.uploadData(data);
+      } 
+    })).subscribe();
+  }
+}
+
+
+@Component({
+  selector: 'dialog-animations-example-dialog',
+  templateUrl: 'dialog-animations-example-dialog.html',
+  standalone: true,
+  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
+})
+export class DialogAnimationsExampleDialog {
+  constructor(public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>
+    ,@Inject(MAT_DIALOG_DATA) public data:any
+  ) {}
+  protected clickDialog = (result:boolean) => this.dialogRef.close(result)
 }

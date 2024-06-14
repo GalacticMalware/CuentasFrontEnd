@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Registrar sin comprobante</h2>
+<mat-dialog-content>
+    ¿Esta seguro de registrar la compra sin comprobante?
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="clickDialog(false)">No</button>
+    <button mat-button mat-dialog-close cdkFocusInitial (click)="clickDialog(true)">Si</button>
+</mat-dialog-actions>
