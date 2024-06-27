@@ -1,7 +1,6 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, inject } from '@angular/core';
 import { PurchaseService } from '../../services/purchase.service';
 
-import { MessageService } from 'primeng/api';
 import {
   Camera,
   CameraResultType,
@@ -23,7 +22,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { StyleClassModule } from 'primeng/styleclass';
 import { CommonModule } from '@angular/common';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,22 +52,25 @@ interface TypesPayments_ {
     CalendarModule,
     InputTextModule,
     ScrollPanelModule,
-    ToastModule,
     DropdownModule,
     InputNumberModule,
     MatButtonModule
   ],
-  providers: [MessageService],
   templateUrl: './register-purchases.component.html',
   styleUrl: './register-purchases.component.scss',
 })
 export default class RegisterPurchasesComponent {
+  
   constructor(
     private sanitizer: DomSanitizer,
     private formBuilder: FormBuilder
-  ) {}
+  ) {
+    this.purchasesForm.reset();
+  }
   private pruchaseService = inject(PurchaseService);
-  private messageService = inject(MessageService);
+
+  @Output()
+  returnTabInit = new EventEmitter();
 
   dialog = inject(MatDialog);
 
@@ -206,7 +207,7 @@ export default class RegisterPurchasesComponent {
       placePurchase:placePurchase.name,
       img:this.base64 ? this.base64 : '',
     }
-    //console.log()
+
     if (!this.base64) {
       this.openDialog('0ms', '0ms', structure);
     }else{
@@ -221,7 +222,8 @@ export default class RegisterPurchasesComponent {
            next: (data) => {
             console.log(data)
              if (data.success) {
-               this.show();
+               this.returnTabInit.emit(1);
+               this.purchasesForm.reset();
                //return this.router.navigate(['/shopping-list']);
              }
              return '';
@@ -232,13 +234,7 @@ export default class RegisterPurchasesComponent {
       }
   }
 
-  show() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Se ingreso correctamnete',
-    });
-  }
+
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string, data:any): void {
   this.dialog.open(DialogAnimationsExampleDialog, {

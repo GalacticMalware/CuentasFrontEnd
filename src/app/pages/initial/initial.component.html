@@ -1,0 +1,75 @@
+<div [style]="{
+    width: '100%',
+    height: 'calc(92% - var(--mdc-secondary-navigation-tab-container-height))',
+    position: 'fixed',
+    top: 'var(--mat-toolbar-mobile-height)'
+  }">
+
+
+    <div class="font-bold text-center px-4">
+        <p-card header="Estadisticas del mes" subheader="Mes del {{mes}}" class=" p-3 border-round">
+            <ng-template pTemplate="header">
+                <!-- <img alt="Card" src="https://primefaces.org/cdn/primeng/images/card-ng.jpg" /> -->
+            </ng-template>
+            <p>
+                <p-chart type="line" [data]="graphData" [options]="options" width="100" [responsive]="true" />
+            </p>
+            <ng-template pTemplate="footer">
+                52% - Enero gasto mas
+                <!-- <div class="flex gap-3 mt-1">
+                        <p-button label="Cancel" severity="secondary" class="w-full" styleClass="w-full" />
+                        <p-button label="Save" class="w-full" styleClass="w-full" />
+                    </div> -->
+            </ng-template>
+        </p-card>
+    </div>
+
+
+    <div class=" px-4 md:px-6 lg:px-8">
+        <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="surface-card shadow-2 p-3 border-round">
+                    Ultima compra realizado
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">{{lastPurchase?.concept}}</span>
+                            <div class="text-900 font-medium text-xl">{{'$' + lastPurchase?.amount}}</div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center {{lastPurchase?.color}}  border-round" style="width:2.5rem;height:2.5rem">
+                            <i class="pi {{lastPurchase?.icon}} {{lastPurchase?.color}}  text-xl"></i>
+                        </div>
+                    </div>
+                    <span class="text-green-500 font-medium">{{lastPurchase?.typePayment}}</span>
+                    <span class="text-500"> - {{lastPurchase?.datePurchase}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class=" px-4 md:px-6 lg:px-8">
+        <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="surface-card shadow-2 p-3 border-round">
+                    <!-- Datos relevantes -->
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Presupuesto del mes</span>
+                            <div class="text-900 font-medium text-xl">{{'$' + dataProfile?.goalMonth}}</div>
+                        </div>
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Presupuesto restante</span>
+                            <div class="text-900 font-medium text-xl">{{'$' + remainingBudget}}</div>
+                        </div>
+                        <div class="flex align-items-center justify-content-center {{lastPurchase?.color}}  border-round" style="width:2.5rem;height:2.5rem">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="attach_money"></mat-icon>
+                            <!-- <i class="pi {{lastPurchase?.icon}} {{lastPurchase?.color}}  text-xl"></i> -->
+                        </div>
+                    </div>
+                    <!-- <span class="text-green-500 font-medium">{{lastPurchase?.typePayment}}</span>
+                    <span class="text-500"> - {{lastPurchase?.datePurchase}}</span> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

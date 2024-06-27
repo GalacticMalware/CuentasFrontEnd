@@ -23,10 +23,10 @@ export class AuthService{
     }
 
     async singInUser(data:Object){  
-        return await this.http.post<HttpResponse>(`${this.URL}/User/Login`,data, this.options).toPromise();
+        return await this.http.post<HttpResponse<null>>(`${this.URL}/User/Login`,data, this.options).toPromise();
       }
 
-    validToken():Observable<HttpResponse>{
-      return this.http.get<HttpResponse>(`${this.URL}/Auth/ValidToken`);
+    validToken():Observable<HttpResponse<null>>{
+      return this.http.get<HttpResponse<null>>(`${this.URL}/Auth/ValidToken`);
     }
 }

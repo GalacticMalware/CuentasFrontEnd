@@ -1,5 +1,5 @@
-export interface HttpResponse {
+export interface HttpResponse <T> {
     success: string | boolean,
-    data: object,
+    data?: T | null,
     message: string
 }

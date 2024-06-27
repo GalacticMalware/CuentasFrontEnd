@@ -1,17 +1,16 @@
 <app-navbar [changeTitle]="titleTab" />
+<p-toast />
 
 <footer>
-    <mat-tab-group headerPosition="below" [style]="{ width: '100%',height: 'calc(100%-0px)' }" [(selectedIndex)]="selectedTab">
+    <mat-tab-group headerPosition="below" [style]="{ width: '100%', height: 'calc(100%-0px)' }" [(selectedIndex)]="selectedTab" (selectedTabChange)="changeState($event)">
         <mat-tab label="Inicio">
-            <button (click)="openContentOne()"></button>
+            <app-initial />
         </mat-tab>
         <mat-tab label="Compras">
-            <app-shopping-list />
-
+            <app-shopping-list [shoppingList]="purchaseData" />
         </mat-tab>
         <mat-tab label="Registrar">
-            <app-register-purchases />
-
+            <app-register-purchases (returnTabInit)="returnTabWatch($event)" />
         </mat-tab>
     </mat-tab-group>
 </footer>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 
 import { PurchaseService } from '../../services/purchase.service';
 import NavbarComponent from '../navbar/navbar.component';
@@ -9,6 +9,7 @@ import { ScrollerModule } from 'primeng/scroller';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ButtonModule } from 'primeng/button';
 import { MatButtonModule } from '@angular/material/button';
+import { Purchase } from '../../interfaces/initial';
 
 @Component({
   selector: 'app-shopping-list',
@@ -28,10 +29,12 @@ import { MatButtonModule } from '@angular/material/button';
 export default class ShoppingListComponent implements OnInit {
   private pruchaseService = inject(PurchaseService);
   private purchaseDataFormat = inject(ShoppingData);
+  @Input() shoppingList: Array<Purchase> = [];
+
   public dataPurchase: any = [];
 
   ngOnInit() {
-    this.getPurchaseList();
+    //this.getPurchaseList();
   }
 
   getPurchaseList() {
@@ -39,8 +42,8 @@ export default class ShoppingListComponent implements OnInit {
       this.pruchaseService.get().subscribe({
         next: (data: any) => {
           if(data.data){
-            console.log("data")
-            this.dataPurchase = this.purchaseDataFormat.formatData(data.data);
+            console.log("data update")
+            this.shoppingList = this.purchaseDataFormat.formatData(data.data);
           }
         },
       });
